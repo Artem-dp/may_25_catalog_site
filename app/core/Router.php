@@ -110,7 +110,6 @@ class Router
      */
     protected function callController(string $controller, string $action, $params = []): void
     {
-        var_dump($controller);
         //check class availability
         if (!class_exists($controller)) {
             throw new ControllerNotFoundException($controller);
