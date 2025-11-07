@@ -12,31 +12,31 @@ class Auth implements AuthInterface
     {
         self::$envPass = password_hash('1234', PASSWORD_DEFAULT);
         if ((password_verify($password, self::$envPass)) && self::$envLogin === $username){
-            $_SESSION['authentic'] = true;
+            $_SESSION['authentic'] = $username;
             return true;
         }
         return false;
     }
     public static function check(): bool
     {
-        if ($_SESSION['authentic']){
-            return true;
+        if (array_key_exists('authentic', $_SESSION)){
+            if ($_SESSION['authentic'] === self::$envLogin){
+                return true;
+            }
         }
         return false;
     }
 
     public static function logout(): void
     {
-        session_destroy();
+        unset($_SESSION['authentic']);
     }
 
     public static function user(): ?array
     {
         $isLoginUser = self::check();
         if ($isLoginUser){
-            return ['user_name' => self::$envLogin,
-                  'user_pass' => self::$envPass,
-                ];
+            return ['user_name' => self::$envLogin,];
         }
         return null;
     }
