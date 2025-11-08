@@ -4,23 +4,25 @@ namespace app\core;
 
 class Controller
 {
-    // Метод для рендера страниц
-    protected function render($view, $data = [], $layout = 'default')
+    protected function render($view, $data = [], $layout = 'site/layouts/default_template')
     {
-        // Формируем путь к шаблону
-        $viewPath = APP_PATH . 'resources/views/' . $view . '.php';
-        // Проверяем, существует ли файл шаблона
+
+        extract($data);
+
+        $viewPath = APP_PATH . '/resources/views/' . $view . '.php';
+
         if (!file_exists($viewPath)) {
-            die('View "' . $view . '" not found.');
+            die("View not found: $viewPath");
         }
 
-        // Превращаем элементы массива в переменные:
-        // ['title' => 'Текст'] станет $title = 'Текст'
-        foreach ($data as $key => $value) {
-            $$key = $value;
+        $layoutPath = APP_PATH . '/resources/views/' . $layout . '.php';
+
+        if (!file_exists($layoutPath)) {
+            die("Layout not found: $layoutPath");
         }
 
-        // Подключаем шаблон
-        require $viewPath;
+        $viewFile = $viewPath;
+
+        require $layoutPath;
     }
 }
