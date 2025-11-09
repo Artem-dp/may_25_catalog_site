@@ -4,8 +4,9 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Главная</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-    <link rel="stylesheet" href="css/home_template.css" />
+    <link rel="stylesheet" href="../../../../../public/css/home_template.css" />
 </head>
 <body>
 <header>
@@ -26,9 +27,9 @@
                 <span> 88005553535 </span>
             </div>
             <div class="socials">
-                <a class="sq" href="https://www.viber.com/"     target="_blank"></a>
-                <a class="sq" href="https://telegram.org/"      target="_blank"></a>
-                <a class="sq" href="https://www.instagram.com/" target="_blank"></a>
+                <a class="sq" href="https://www.viber.com/" target="_blank"><i class="fa-brands fa-viber"></i></a>
+                <a class="sq" href="https://telegram.org/" target="_blank"><i class="fa-brands fa-telegram"></i></a>
+                <a class="sq" href="https://www.instagram.com/" target="_blank"><i class="fa-brands fa-instagram"></i></a>
             </div>
         </div>
     </div>
@@ -41,29 +42,7 @@
         </p>
     </section>
     <section>
-        <div class="swiper mySwiper">
-            <div class="swiper-wrapper">
-
-                <div class="swiper-slide">
-                    <figure class="slide">
-                        <div class="slide-media">
-                            <img src="https://picsum.photos/seed/cat1/1200/800" alt="Вид на воду">
-                        </div>
-                        <figcaption class="slide-caption">Какой прекрасный вид</figcaption>
-                    </figure>
-                </div>
-                <div class="swiper-slide">
-                    <figure class="slide">
-                        <div class="slide-media">
-                            <img src="https://picsum.photos/seed/cat2/1200/800" alt="Машинка">
-                        </div>
-                        <figcaption class="slide-caption">Машинка</figcaption>
-                    </figure>
-                </div>
-            </div>
-            <div class="swiper-button-next"></div>
-            <div class="swiper-button-prev"></div>
-        </div>
+      <?php include_once '../layouts/default_template.php'?>
     </section>
 </main>
 <footer>
@@ -72,7 +51,7 @@
     </div>
 </footer>
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-<script src="js/home_template.js" defer></script>
+<script src="../../../../../public/js/home_template.js" ></script>
 </body>
 </html>
 
