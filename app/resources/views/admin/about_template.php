@@ -1,7 +1,6 @@
 <?php
 /** @var array  $data  ['title','content','lang'] */
 /** @var string $lang */
-/** @var array|null $flash */
 $lang = $data['lang'] ?? ($lang ?? 'ru');
 ?>
 <!doctype html>
@@ -10,10 +9,7 @@ $lang = $data['lang'] ?? ($lang ?? 'ru');
     <meta charset="utf-8">
     <title>Админка — О нас</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- CKEditor 5 (без ключей) -->
     <script src="https://cdn.ckeditor.com/ckeditor5/41.3.1/classic/ckeditor.js"></script>
 </head>
 <body class="bg-light">
@@ -27,13 +23,6 @@ $lang = $data['lang'] ?? ($lang ?? 'ru');
             <a class="btn btn-outline-secondary <?= $lang==='en'?'active':'' ?>" href="/admin/about?lang=en">EN</a>
         </div>
     </div>
-
-    <?php if (!empty($flash)): ?>
-        <div class="alert alert-<?= htmlspecialchars($flash['type']) ?>">
-            <?= htmlspecialchars($flash['msg']) ?>
-        </div>
-    <?php endif; ?>
-
     <div class="card shadow-sm">
         <div class="card-body">
             <form method="post" action="/admin/about/save">
