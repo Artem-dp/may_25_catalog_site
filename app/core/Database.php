@@ -7,6 +7,6 @@ use app\interfaces\DatabaseInterface;
 class Database implements DatabaseInterface
 {
     public function connect(): \mysqli{
-        return new \mysqli('DB_HOST', 'DB_USER', 'DB_PASS', 'DB_NAME');
+        return new \mysqli('localhost', 'root', 'root', 'may_0000');
     }
 }
