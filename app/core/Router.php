@@ -59,6 +59,7 @@ class Router
         $httpMethod = $_SERVER['REQUEST_METHOD'];
         $uri = $_SERVER['REQUEST_URI'];
         $uri = parse_url($uri, PHP_URL_PATH);
+        $uri = $this->extractLanguageFromUri($uri);
         $this->dispatch($httpMethod, $uri);
     }
 
@@ -81,7 +82,12 @@ class Router
         // check protected routes
         foreach ($this->protectedRoutes as $route) {
             if ($route['method'] === $httpMethod && $route['uri'] === $uri) {
-                // TODO: check authentication
+                if (!Auth::check()) {
+                    $loginUrl = self::url('/admin/login');
+                    $this->redirect($loginUrl);
+                    return;
+                }
+
                 $this->callController($route['controller'], $route['action']);
                 return;
             }
@@ -113,18 +119,69 @@ class Router
         //check class availability
         if (!class_exists($controller)) {
             throw new ControllerNotFoundException($controller);
-            return;
         }
         $controllerInstance = new $controller();
         //check method availability
         if (!method_exists($controllerInstance, $action)) {
             throw new \BadMethodCallException("Method '$action' not found in controller '$controller'");
-            return;
         }
 
         //call method
         $controllerInstance->$action(...$params);
     }
 
+    private function extractLanguageFromUri(string $uri): string
+    {
+        $uri = rtrim($uri, '/');
+        if ($uri === '') {
+            $uri = '/';
+        }
 
+        // Admin routes ignore language prefix
+        if (str_starts_with($uri, '/admin')) {
+            Language::setLanguage(Language::getDefaultLanguage());
+            return $uri;
+        }
+
+
+        // Check if URI starts with /{lang}/
+        if (preg_match('#^/([a-z]{2})(/.*)?$#', $uri, $matches)) {
+            $langCode = $matches[1];
+            $pathWithoutLang = $matches[2] ?? '/';
+
+            // сheck if language is available
+            if (Language::isAvailable($langCode)) {
+                // if default language, remove lang prefix
+                if ($langCode === Language::getDefaultLanguage()) {
+                    $this->redirect($pathWithoutLang, 301);
+                }
+                Language::setLanguage($langCode);
+                return $pathWithoutLang;
+            }
+        }
+        Language::setLanguage(Language::getDefaultLanguage());
+        return $uri;
+    }
+
+    /**
+     * Generate localized URL
+     * @param string $path
+     * @param string|null $lang language code, null for current language
+     * @return string
+     */
+    public static function url(string $path, ?string $lang = null): string
+    {
+        if ($lang === null) {
+            $lang = Language::getCurrentLanguage();
+        }
+
+        if (!str_starts_with($path, '/')) {
+            $path = '/' . $path;
+        }
+        $defaultLang = Language::getDefaultLanguage();
+        if ($lang === $defaultLang) {
+            return $path;
+        }
+        return '/' . $lang . $path;
+    }
 }
