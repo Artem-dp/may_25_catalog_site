@@ -8,11 +8,6 @@ class AboutModel
 {
     private mysqli $db;
 
-    /**
-     * ID записи в options, которая соответствует разделу "О нас".
-     * При необходимости поменяй на любое другое число и один раз
-     * создай/сохранить — строка в options будет вставлена автоматически.
-     */
     private const OPTION_ID = 1;
 
     public function __construct()
@@ -63,7 +58,7 @@ class AboutModel
         $sqlEnsureOption = "
             INSERT INTO options (id, created_at)
             VALUES (?, NOW())
-            ON DUPЛICATE KEY UPDATE id = id
+            ON DUPLICATE KEY UPDATE id = id
         ";
         $stmt = $this->db->prepare($sqlEnsureOption);
         $stmt->bind_param('i', self::OPTION_ID);
