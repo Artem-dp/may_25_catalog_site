@@ -6,12 +6,18 @@ use app\interfaces\AuthInterface;
 
 class Auth implements AuthInterface
 {
-    static private $envLogin = 'bob';
-    static private $envPass;
+    static protected function getAdminName(): string
+    {
+        return Env::config('admin_name');
+    }
+    static protected function getAdminPassHash(): string
+    {
+        return Env::config('admin_pass');
+    }
     public static function login(string $username, string $password): bool
     {
-        self::$envPass = password_hash('1234', PASSWORD_DEFAULT);
-        if ((password_verify($password, self::$envPass)) && self::$envLogin === $username){
+        if ((password_verify($password, self::getAdminPassHash()))
+            && self::getAdminName() === $username){
             $_SESSION['authentic'] = $username;
             return true;
         }
@@ -19,24 +25,27 @@ class Auth implements AuthInterface
     }
     public static function check(): bool
     {
-        if (array_key_exists('authentic', $_SESSION)){
-            if ($_SESSION['authentic'] === self::$envLogin){
+        if (isset($_SESSION['authentic'])){
                 return true;
             }
-        }
         return false;
     }
 
     public static function logout(): void
     {
-        unset($_SESSION['authentic']);
+        if (isset($_SESSION['authentic'])){
+            unset($_SESSION['authentic']);
+        };
+
     }
 
     public static function user(): ?array
     {
         $isLoginUser = self::check();
         if ($isLoginUser){
-            return ['user_name' => self::$envLogin,];
+            return [
+                'user_name' => self::getAdminName(),
+                ];
         }
         return null;
     }
