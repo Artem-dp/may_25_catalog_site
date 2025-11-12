@@ -84,7 +84,7 @@ class Router
             if ($route['method'] === $httpMethod && $route['uri'] === $uri) {
                 if (!Auth::check()) {
                     $loginUrl = self::url('/admin/login');
-                    $this->redirect($loginUrl);
+                    self::redirect($loginUrl);
                     return;
                 }
 
@@ -103,7 +103,7 @@ class Router
      * @param int $statusCode
      * @return void
      */
-    protected function redirect(string $uri, int $statusCode = 302): void
+    public static function redirect(string $uri, int $statusCode = 302): void
     {
         http_response_code($statusCode);
         header("Location: $uri");
@@ -139,7 +139,7 @@ class Router
 
         // Admin routes ignore language prefix
         if (str_starts_with($uri, '/admin')) {
-            Language::setLanguage(Language::getDefaultLanguage());
+//            Language::setLanguage(Language::getDefaultLanguage());
             return $uri;
         }
 
@@ -153,7 +153,7 @@ class Router
             if (Language::isAvailable($langCode)) {
                 // if default language, remove lang prefix
                 if ($langCode === Language::getDefaultLanguage()) {
-                    $this->redirect($pathWithoutLang, 301);
+                    self::redirect($pathWithoutLang, 301);
                 }
                 Language::setLanguage($langCode);
                 return $pathWithoutLang;

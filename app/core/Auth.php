@@ -8,14 +8,15 @@ class Auth implements AuthInterface
 {
     static protected function getAdminName(): string
     {
-        return Env::config('admin_name');
+        return Env::config('ADMIN_LOGIN');
     }
     static protected function getAdminPassHash(): string
     {
-        return Env::config('admin_pass');
+        return Env::config('ADMIN_PASS');
     }
     public static function login(string $username, string $password): bool
     {
+
         if ((password_verify($password, self::getAdminPassHash()))
             && self::getAdminName() === $username){
             $_SESSION['authentic'] = $username;
