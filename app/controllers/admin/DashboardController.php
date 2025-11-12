@@ -2,10 +2,12 @@
 
 namespace app\controllers\admin;
 
-class DashboardController
+use app\core\Controller;
+
+class DashboardController extends Controller
 {
-    public function index()
+    public function index():void
     {
-        echo 'dashboard';
+        $this->render('admin/dashboard_template', [], 'site/layouts/admin_template');
     }
 }

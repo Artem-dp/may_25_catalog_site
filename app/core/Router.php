@@ -72,6 +72,10 @@ class Router
         // check public routes
         foreach ($this->routes as $route) {
             if ($route['method'] === $httpMethod && $route['uri'] === $uri) {
+                if ($uri === '/admin/login' && Auth::check()) {
+                    self::redirect('/admin/dashboard');
+                    return;
+                }
                 $controller = $route['controller'];
                 $action = $route['action'];
                 $this->callController($route['controller'], $route['action']);

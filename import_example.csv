@@ -1,0 +1,11 @@
+category_name_uk,category_name_en,category_name_ru,product_name_uk,product_name_en,product_name_ru,image_url
+Електроніка,Electronics,Электроника,Ноутбук Lenovo,Lenovo Laptop,Ноутбук Lenovo,https://example.com/images/lenovo-laptop.jpg
+Електроніка,Electronics,Электроника,Смартфон Samsung,Samsung Smartphone,Смартфон Samsung,https://example.com/images/samsung-phone.jpg
+Електроніка,Electronics,Электроника,Навушники Sony,Sony Headphones,Наушники Sony,https://example.com/images/sony-headphones.jpg
+Одяг,Clothing,Одежда,Футболка чоловіча,Men's T-Shirt,Мужская футболка,https://example.com/images/tshirt-men.jpg
+Одяг,Clothing,Одежда,Джинси жіночі,Women's Jeans,Женские джинсы,https://example.com/images/jeans-women.jpg
+Меблі,Furniture,Мебель,Стіл офісний,Office Desk,Офисный стол,https://example.com/images/office-desk.jpg
+Меблі,Furniture,Мебель,Крісло комп'ютерне,Computer Chair,Компьютерное кресло,https://example.com/images/computer-chair.jpg
+Книги,Books,Книги,Програмування PHP,PHP Programming,Программирование PHP,https://example.com/images/php-book.jpg
+Книги,Books,Книги,Вивчаємо JavaScript,Learning JavaScript,Изучаем JavaScript,https://example.com/images/js-book.jpg
+Спорт,Sports,Спорт,М'яч футбольний,Football Ball,Футбольный мяч,https://example.com/images/football.jpg
