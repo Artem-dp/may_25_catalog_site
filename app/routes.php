@@ -16,4 +16,7 @@ $router->addProtectedRoute('GET','/admin/dashboard', DashboardController::class,
 $router->addProtectedRoute('GET','/admin/catalog', CatalogController::class, 'index' );
 $router->addProtectedRoute('POST','/admin/catalog/upload', CatalogController::class, 'upload' );
 
+$router->get('/admin/language', 'admin\LanguageController@index');
+$router->get('/admin/language/switch', 'admin\LanguageController@switch');
+
 
