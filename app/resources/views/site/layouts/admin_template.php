@@ -50,6 +50,12 @@
                 </a>
             </li>
             <li class="nav-item">
+                <a class="nav-link" href="/admin/languages">
+                    <i class="bi bi-translate"></i>
+                    Языки
+                </a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link" href="/admin/settings">
                     <i class="bi bi-gear"></i>
                     Настройки

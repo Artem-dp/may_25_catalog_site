@@ -5,6 +5,7 @@ use app\controllers\HomeController;
 use app\controllers\admin\LoginController;
 use app\controllers\admin\CatalogController;
 use app\controllers\admin\DashboardController;
+use app\controllers\admin\LanguageController;
 
 $router->addRoute('GET','/', HomeController::class, 'index' );
 $router->addRoute('GET','/admin/login', LoginController::class, 'index' );
@@ -15,8 +16,6 @@ $router->addRoute('GET','/admin/logout', LoginController::class, 'logout' );
 $router->addProtectedRoute('GET','/admin/dashboard', DashboardController::class, 'index' );
 $router->addProtectedRoute('GET','/admin/catalog', CatalogController::class, 'index' );
 $router->addProtectedRoute('POST','/admin/catalog/upload', CatalogController::class, 'upload' );
-
-$router->get('/admin/language', 'admin\LanguageController@index');
-$router->get('/admin/language/switch', 'admin\LanguageController@switch');
+$router->addProtectedRoute('GET','/admin/languages', LanguageController::class, 'index');
 
 
