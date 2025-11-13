@@ -11,4 +11,7 @@ $router->addRoute('GET','/admin/about', AboutController::class, 'index' );
 $router->addRoute('POST','/admin/login', LoginController::class, 'login' );
 $router->addProtectedRoute('GET','/admin/dashboard', DashboardController::class, 'index' );
 
+$router->get('/admin/language', 'admin\LanguageController@index');
+$router->get('/admin/language/switch', 'admin\LanguageController@switch');
+
 
