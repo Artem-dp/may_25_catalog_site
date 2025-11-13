@@ -7,7 +7,7 @@ use app\exceptions\CatalogUploadException;
 
 class CatalogController extends Controller
 {
-    public function index():void
+    public function index(): void
     {
         // Отримуємо мову з GET параметра, за замовчуванням 'uk'
         $lang = $_GET['lang'] ?? 'uk';
@@ -93,25 +93,17 @@ class CatalogController extends Controller
 
     public function upload(): void
     {
-        if(!isset($_FILES['csv_file'])){
+        if (!isset($_FILES['csv_file'])) {
             throw new \Exception('File not found');
         }
 
         $file = $_FILES['csv_file'];
 
-        // TODO: Витягнути мови з БД
-        // SELECT id, code FROM langs
-        $langs = [
-            ['id' => 1, 'code' => 'uk'],
-            ['id' => 2, 'code' => 'en'],
-            ['id' => 3, 'code' => 'ru'],
-        ];
-
         $processedFile = fopen($file['tmp_name'], 'r');
         if ($processedFile === false) {
             throw new CatalogUploadException('Failed to open file');
         }
-        
+
         $header = fgetcsv($processedFile, 0, ',', '"', '');
         if ($header === false) {
             fclose($processedFile);
@@ -139,10 +131,48 @@ class CatalogController extends Controller
 
         // Prepare structure for DB
         $categories = [];
-        $categoriesLangs = [];
-        $products = [];
-        $productsLangs = [];
 
+        while (($row = fgetcsv($processedFile, 0, ',', '"', '')) !== false) {
+            if (empty($row)) {
+                continue;
+            }
+            $categoryTranslations = [];
+
+            foreach ($categoryColumns as $langCode => $columnIndex) {
+                $categoryTranslations[$langCode] = $row[$columnIndex];
+            }
+
+            $categoryKey = $categoryTranslations[array_key_first($categoryTranslations)];
+
+            $productTranslations = [];
+            foreach ($productColumns as $langCode => $columnIndex) {
+                $productTranslations[$langCode] = $row[$columnIndex];
+            }
+            //image url
+            $imageUrl = null;
+            if ($imageUrlColumn !== null && isset($row[$imageUrlColumn])) {
+                $imageUrl = $row[$imageUrlColumn];
+            }
+
+            //save category to array
+            if (!isset($categories[$categoryKey])) {
+                $categories[$categoryKey] = [
+                    'translations' => $categoryTranslations,
+                    'products' => []
+                ];
+            }
+            //add product to category
+            $categories[$categoryKey]['products'][] = [
+                'translations' => $productTranslations,
+                'image_url' => $this->downloadImage($imageUrl)
+            ];
+        }
+        fclose($processedFile);
+
+        $catalogArray = array_values($categories);
+
+        //TODO: model method saveCatalog
+        var_dump($catalogArray);
 
     }
 
@@ -154,7 +184,17 @@ class CatalogController extends Controller
      */
     private function downloadImage(string $url): string
     {
+        $fileId = str_replace('https://drive.google.com/file/d/', '', $url);
+        if (($pos = strpos($fileId, '/view')) !== false) {
+            $fileId = substr($fileId, 0, $pos);
+        }
 
+        $url = "https://drive.usercontent.google.com/download?id={$fileId}&export=download&authuser=0&confirm=t";
+        $imageContent = file_get_contents($url);
+        $imgInfo = getimagesizefromstring($imageContent);
+        if (!$imgInfo) {
+            throw new CatalogUploadException("Invalid image format");
+        }
 
         $uploadDir = ROOT_PATH . 'public/uploads/products/';
 
@@ -162,7 +202,19 @@ class CatalogController extends Controller
             mkdir($uploadDir, 0755, true);
         }
 
-        $extension = pathinfo($url, PATHINFO_EXTENSION);
+
+        $mimeToExt = [
+            'image/jpeg' => 'jpg',
+            'image/jpg' => 'jpg',
+            'image/png' => 'png',
+            'image/gif' => 'gif',
+            'image/webp' => 'webp',
+            'image/bmp' => 'bmp',
+        ];
+
+        $mimeType = $imgInfo['mime'];
+        $extension = $mimeToExt[$mimeType];
+
         $filename = uniqid() . '.' . $extension;
         $filepath = $uploadDir . $filename;
 
@@ -175,7 +227,6 @@ class CatalogController extends Controller
 
         return '/uploads/products/' . $filename;
     }
-
 
 
 }
