@@ -2,9 +2,13 @@
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h1 class="h3 mb-0">Управление каталогом</h1>
     <div class="btn-group">
-        <a class="btn btn-outline-secondary <?= $lang==='uk'?'active':'' ?>" href="/admin/catalog?lang=uk">UK</a>
-        <a class="btn btn-outline-secondary <?= $lang==='en'?'active':'' ?>" href="/admin/catalog?lang=en">EN</a>
-        <a class="btn btn-outline-secondary <?= $lang==='ru'?'active':'' ?>" href="/admin/catalog?lang=ru">RU</a>
+        <?php
+        $currentLang = $_GET['lang'] ?? \app\core\Language::getDefaultLanguage();
+
+        foreach (\app\core\Language::getLanguages() as $lang): ?>
+            <a class="btn btn-outline-secondary <?= $lang['code'] === $currentLang ? 'active' : '' ?>"
+               href="/admin/catalog?lang=<?= $lang['code'] ?>"><?= $lang['code'] ?></a>
+        <?php endforeach; ?>
     </div>
 </div>
 
@@ -15,7 +19,7 @@
     </div>
     <div class="card-body">
         <form action="/admin/catalog/upload" method="post" enctype="multipart/form-data" id="uploadForm">
-            <div class="row align-items-end">
+            <div class="row">
                 <div class="col-md-8">
                     <label for="csv_file" class="form-label fw-bold">
                         <i class="bi bi-file-earmark-spreadsheet me-1"></i>Выберите CSV файл
@@ -32,7 +36,7 @@
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <button type="submit" class="btn btn-primary w-100">
+                    <button type="submit" class="btn btn-primary w-100 " style="margin-top: 32px;">
                         <i class="bi bi-upload me-2"></i>Загрузить
                     </button>
                 </div>
@@ -55,46 +59,13 @@
         </div>
     </div>
     <div class="card-body">
-        <?php if (isset($categoriesLangs) && !empty($categoriesLangs)):
-            // Групуємо переклади категорій по category_id
-            $categoriesGrouped = [];
-            foreach ($categoriesLangs as $catLang) {
-                $catId = $catLang['category_id'];
-                if (!isset($categoriesGrouped[$catId])) {
-                    $categoriesGrouped[$catId] = [];
-                }
-                $categoriesGrouped[$catId][$catLang['lang_id']] = $catLang['name'];
-            }
-
-            // Групуємо переклади товарів по product_id
-            $productsGrouped = [];
-            if (isset($productsLangs)) {
-                foreach ($productsLangs as $prodLang) {
-                    $prodId = $prodLang['product_id'];
-                    if (!isset($productsGrouped[$prodId])) {
-                        $productsGrouped[$prodId] = [
-                            'category_id' => $prodLang['category_id'],
-                            'langs' => []
-                        ];
-                    }
-                    $productsGrouped[$prodId]['langs'][$prodLang['lang_id']] = $prodLang['name'];
-                }
-            }
-        ?>
+        <?php if (!empty($catalog)): ?>
             <div id="catalogTree">
                 <ul class="tree">
-                    <?php foreach ($categoriesGrouped as $categoryId => $categoryTranslations):
-                        // Отримуємо назву категорії для поточної мови
-                        $categoryName = $categoryTranslations[$currentLangId] ?? reset($categoryTranslations);
-
-                        // Підраховуємо товари в категорії
-                        $categoryProducts = array_filter($productsGrouped, function($product) use ($categoryId) {
-                            return $product['category_id'] === $categoryId;
-                        });
-                        $productCount = count($categoryProducts);
-                    ?>
+                    <?php foreach ($catalog as $category): ?>
                         <li>
                             <div class="tree-item category">
+                                <?php $productCount = count($category['products']); ?>
                                 <?php if ($productCount > 0): ?>
                                     <span class="tree-toggle">−</span>
                                 <?php else: ?>
@@ -103,7 +74,7 @@
 
                                 <div class="tree-content">
                                     <i class="bi bi-folder category-icon"></i>
-                                    <strong><?= htmlspecialchars($categoryName) ?></strong>
+                                    <strong><?= htmlspecialchars($category['name']) ?></strong>
                                 </div>
 
                                 <?php if ($productCount > 0): ?>
@@ -113,17 +84,16 @@
 
                             <?php if ($productCount > 0): ?>
                                 <ul>
-                                    <?php foreach ($categoryProducts as $productId => $product):
-                                        $productName = $product['langs'][$currentLangId] ?? reset($product['langs']);
-                                    ?>
+                                    <?php foreach ($category['products'] as $product):
+                                        ?>
                                         <li>
                                             <div class="tree-item product">
                                                 <span style="width: 20px; display: inline-block;"></span>
                                                 <div class="tree-content">
                                                     <i class="bi bi-box-seam product-icon"></i>
-                                                    <?= htmlspecialchars($productName) ?>
+                                                    <?= htmlspecialchars($product['name']) ?>
                                                 </div>
-                                                <small class="text-muted">ID: <?= $productId ?></small>
+                                                <small class="text-muted">ID: <?= $product['id'] ?></small>
                                             </div>
                                         </li>
                                     <?php endforeach; ?>

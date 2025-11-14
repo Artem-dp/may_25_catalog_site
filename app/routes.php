@@ -8,6 +8,7 @@ use app\controllers\admin\DashboardController;
 use app\controllers\admin\LanguageController;
 
 $router->addRoute('GET','/', HomeController::class, 'index' );
+$router->addRoute('GET','/admin', LoginController::class, 'redirectToDashboard' );
 $router->addRoute('GET','/admin/login', LoginController::class, 'index' );
 $router->addRoute('GET','/admin/about', AboutController::class, 'index' );
 $router->addRoute('POST','/admin/login', LoginController::class, 'login' );

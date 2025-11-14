@@ -38,7 +38,8 @@ class AboutModel
         ";
 
         $stmt = $this->db->prepare($sql);
-        $stmt->bind_param('is', self::OPTION_ID, $langCode);
+        $var1 = self::OPTION_ID;
+        $stmt->bind_param('is', $var1, $langCode);
         $stmt->execute();
 
         $res = $stmt->get_result();
@@ -61,7 +62,8 @@ class AboutModel
             ON DUPLICATE KEY UPDATE id = id
         ";
         $stmt = $this->db->prepare($sqlEnsureOption);
-        $stmt->bind_param('i', self::OPTION_ID);
+        $OPTION_ID = self::OPTION_ID;
+        $stmt->bind_param('i', $OPTION_ID);
         $stmt->execute();
         $stmt->close();
 
@@ -87,7 +89,7 @@ class AboutModel
                 value = VALUES(value)
         ";
         $stmt = $this->db->prepare($sqlUpsert);
-        $stmt->bind_param('iiss', self::OPTION_ID, $langId, $title, $content);
+        $stmt->bind_param('iiss', $OPTION_ID, $langId, $title, $content);
         $ok = $stmt->execute();
         $stmt->close();
 

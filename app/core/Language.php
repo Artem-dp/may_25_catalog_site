@@ -18,9 +18,9 @@ class Language implements LanguageAwareInterface
 //        }
 
         return [
-            ['id' => 1, 'code' => 'en', 'name' => 'English'],
+            ['id' => 3, 'code' => 'en', 'name' => 'English'],
             ['id' => 1, 'code' => 'ru', 'name' => 'Русский'],
-            ['id' => 1, 'code' => 'uk', 'name' => 'Українська']
+            ['id' => 2, 'code' => 'uk', 'name' => 'Українська']
         ];
     }
 
