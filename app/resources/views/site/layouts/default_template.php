@@ -13,7 +13,7 @@
 <header>
     <div class="container header-row">
         <a class="logo" href="/">
-            <img src="" alt="Логотип сайта">
+            <img src="/images/nocomfy_site.png" alt="Логотип сайта">
         </a>
         <form class="lang" method="get" action="/">
             <label for="lang"></label>
