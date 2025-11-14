@@ -30,22 +30,17 @@ class LanguagesModel extends Database
 
     public function add(string $code, string $name): void
     {
-        $this->db->query(
-            "INSERT INTO languages (code, name) VALUES (:code, :name)",
-            [
-                ':code' => $code,
-                ':name' => $name
-            ]
-        );
+        $stmt = $this->db->prepare("INSERT INTO langs (`name`, `code`) VALUES (?, ?)");
+        $stmt->bind_param('ss', $name, $code);
+        $stmt->execute();
+        $stmt->close();
     }
 
     public function delete(int $id): void
     {
-        $this->db->query(
-            "DELETE FROM languages WHERE id = :id",
-            [
-                ':id' => $id
-            ]
-        );
+        $stmt = $this->db->prepare("DELETE FROM langs WHERE id = ?");
+        $stmt->bind_param('i', $id);
+        $stmt->execute();
+        $stmt->close();
     }
 }

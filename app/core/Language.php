@@ -31,4 +31,9 @@ class Language implements LanguageAwareInterface
     {
         return Env::config('DEFAULT_LANG');
     }
+    public static function isAvailable(string $langCode): bool
+    {
+        $languages = self::getLanguages();
+        return in_array($langCode, array_column($languages, 'code'));
+    }
 }

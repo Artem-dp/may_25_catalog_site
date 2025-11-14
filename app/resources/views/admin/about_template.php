@@ -18,15 +18,19 @@ $lang = $data['lang'] ?? ($lang ?? 'ru');
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h1 class="h4 mb-0">Раздел «О нас»</h1>
         <div class="btn-group">
-            <a class="btn btn-outline-secondary <?= $lang==='uk'?'active':'' ?>" href="/admin/about?lang=uk">UK</a>
-            <a class="btn btn-outline-secondary <?= $lang==='ru'?'active':'' ?>" href="/admin/about?lang=ru">RU</a>
-            <a class="btn btn-outline-secondary <?= $lang==='en'?'active':'' ?>" href="/admin/about?lang=en">EN</a>
+            <?php
+            $currentLang = $_GET['lang'] ?? \app\core\Language::getDefaultLanguage();
+
+            foreach (\app\core\Language::getLanguages() as $lang): ?>
+                <a class="btn btn-outline-secondary <?= $lang['code'] === $currentLang ? 'active' : '' ?>"
+                   href="/admin/about?lang=<?= $lang['code'] ?>"><?= $lang['code'] ?></a>
+            <?php endforeach; ?>
         </div>
     </div>
     <div class="card shadow-sm">
         <div class="card-body">
-            <form method="post" action="/admin/about/save">
-                <input type="hidden" name="lang" value="<?= htmlspecialchars($lang) ?>">
+            <form method="post" action="/admin/about/save?lang=<?= $currentLang ?>">
+<!--                <input type="hidden" name="lang" value="--><?php //= htmlspecialchars($lang) ?><!--">-->
 
                 <div class="mb-3">
                     <label for="title" class="form-label">Заголовок</label>

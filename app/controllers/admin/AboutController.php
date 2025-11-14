@@ -9,7 +9,7 @@ class AboutController extends Controller
 {
     public function index(): void
     {
-        $lang = $_GET['lang'] ?? Env::config('DEFAULT_LANGUAGE');
+        $lang = $_GET['lang'] ?? Env::config('DEFAULT_LANG');
 
         $model = new AboutModel();
         $data  = $model->getByLang($lang);
@@ -19,7 +19,7 @@ class AboutController extends Controller
 
     public function save(): void
     {
-        $lang    = $_POST['lang'] ?? Env::config('DEFAULT_LANGUAGE');
+        $lang    = $_GET['lang'] ?? Env::config('DEFAULT_LANG');
         $title   = trim($_POST['title'] ?? '');
         $content = $_POST['content'] ?? null;
 
