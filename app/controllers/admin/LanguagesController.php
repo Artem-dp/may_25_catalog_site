@@ -13,7 +13,7 @@ class LanguagesController extends Controller
         $languages = Language::getLanguages();
         $current = Language::getCurrentLanguage();
 
-        $this->render('admin/language_template', [
+        $this->render('admin/languages_template', [
             'languages' => $languages,
             'current' => $current
         ], 'site/layouts/admin_template');

@@ -1,36 +1,51 @@
 <?php
 
-namespace app\controllers\admin;
+namespace app\models\admin;
 
-use app\core\Controller;
-use app\core\Router;
-use app\models\admin\LanguagesModel;
+use app\core\Database;
+use app\core\Model;
 
-class LanguagesController extends Controller
+class LanguagesModel extends Database
 {
-    public function index()
+    private \mysqli $db;
+    public function __construct()
     {
-        $model = new LanguagesModel();
-        $languages = $model->getAll();
-
-        $this->render('languages_template', ['languages' => $languages], 'admin_template');
+        $this->db = $this->connect();
     }
 
-    public function add()
+    public function getAll(): array
     {
-        $model = new LanguagesModel();
-        $model->add($_POST['code'] ?? '', $_POST['name'] ?? '');
-
-        Router::redirect('/admin/languages');
-    }
-
-    public function delete()
-    {
-        $model = new LanguagesModel();
-        if (!empty($_GET['id'])) {
-            $model->delete((int)$_GET['id']);
+        $rows = $this->db->query("SELECT * FROM langs ORDER BY id ASC");
+        $result = [];
+        foreach ($rows as $row) {
+            $result[] = [
+                'id'   => (int)$row['id'],
+                'code' => $row['code'],
+                'name' => $row['name']
+            ];
         }
 
-        Router::redirect('/admin/languages');
+        return $result;
+    }
+
+    public function add(string $code, string $name): void
+    {
+        $this->db->query(
+            "INSERT INTO languages (code, name) VALUES (:code, :name)",
+            [
+                ':code' => $code,
+                ':name' => $name
+            ]
+        );
+    }
+
+    public function delete(int $id): void
+    {
+        $this->db->query(
+            "DELETE FROM languages WHERE id = :id",
+            [
+                ':id' => $id
+            ]
+        );
     }
 }

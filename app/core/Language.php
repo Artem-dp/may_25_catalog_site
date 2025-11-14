@@ -3,6 +3,7 @@
 namespace app\core;
 
 use app\interfaces\LanguageAwareInterface;
+use app\models\admin\LanguagesModel;
 
 class Language implements LanguageAwareInterface
 {

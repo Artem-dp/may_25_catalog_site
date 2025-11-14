@@ -120,7 +120,6 @@ class CatalogModel extends Database
 
     public function getCategoriesWithProducts(int $currentLang): array
     {
-       var_dump($currentLang);
         $sql = "
       SELECT
           categories.id,

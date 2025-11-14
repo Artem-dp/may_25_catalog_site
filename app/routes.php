@@ -22,8 +22,8 @@ $router->addProtectedRoute('GET','/admin/languages', LanguagesController::class,
 
 
 
-$router->addProtectedRoute('/admin/languages', LanguagesController::class, 'index');
-$router->addProtectedRoute('/admin/languages/add', LanguagesController::class, 'add');
-$router->addProtectedRoute('/admin/languages/delete', LanguagesController::class, 'delete');
+$router->addProtectedRoute('GET', '/admin/languages', LanguagesController::class, 'index');
+$router->addProtectedRoute('POST', '/admin/languages/add', LanguagesController::class, 'add');
+$router->addProtectedRoute('POST', '/admin/languages/delete', LanguagesController::class, 'delete');
 
 

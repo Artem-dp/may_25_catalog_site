@@ -2,13 +2,14 @@
 namespace app\controllers\admin;
 
 use app\core\Controller;
+use app\core\Env;
 use app\models\admin\AboutModel;
 
 class AboutController extends Controller
 {
     public function index(): void
     {
-        $lang = $_GET['lang'] ?? 'ru';
+        $lang = $_GET['lang'] ?? Env::config('DEFAULT_LANGUAGE');
 
         $model = new AboutModel();
         $data  = $model->getByLang($lang);
@@ -18,7 +19,7 @@ class AboutController extends Controller
 
     public function save(): void
     {
-        $lang    = $_POST['lang'] ?? 'ru';
+        $lang    = $_POST['lang'] ?? Env::config('DEFAULT_LANGUAGE');
         $title   = trim($_POST['title'] ?? '');
         $content = $_POST['content'] ?? null;
 
