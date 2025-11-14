@@ -7,3 +7,8 @@ const swiper = new Swiper('.mySwiper', {
         clickable: true,
     },
 });
+
+const LangSelect = document.getElementById('lang');
+LangSelect.addEventListener("change", function () {
+    window.location.href = this.value;
+})
