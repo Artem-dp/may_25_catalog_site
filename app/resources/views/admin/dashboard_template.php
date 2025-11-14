@@ -12,7 +12,7 @@
                 <div class="d-flex justify-content-between align-items-center">
                     <div>
                         <p class="text-muted mb-1 small">Категории</p>
-                        <h3 class="mb-0"><?= $stats['categories'] ?? 0 ?></h3>
+                        <h3 class="mb-0"><?= $categoriesCount?></h3>
                     </div>
                     <div class="rounded-circle bg-primary bg-opacity-10 p-3">
                         <i class="bi bi-folder text-primary" style="font-size: 1.5rem;"></i>
@@ -28,7 +28,7 @@
                 <div class="d-flex justify-content-between align-items-center">
                     <div>
                         <p class="text-muted mb-1 small">Товары</p>
-                        <h3 class="mb-0"><?= $stats['products'] ?? 0 ?></h3>
+                        <h3 class="mb-0"><?= $productsCount?></h3>
                     </div>
                     <div class="rounded-circle bg-success bg-opacity-10 p-3">
                         <i class="bi bi-box-seam text-success" style="font-size: 1.5rem;"></i>
@@ -44,7 +44,7 @@
                 <div class="d-flex justify-content-between align-items-center">
                     <div>
                         <p class="text-muted mb-1 small">Языки</p>
-                        <h3 class="mb-0"><?= $stats['languages'] ?? 3 ?></h3>
+                        <h3 class="mb-0"><?= count($langs)?></h3>
                     </div>
                     <div class="rounded-circle bg-info bg-opacity-10 p-3">
                         <i class="bi bi-translate text-info" style="font-size: 1.5rem;"></i>
@@ -137,9 +137,9 @@
                 <div class="mb-3">
                     <small class="text-muted d-block mb-1">Доступные языки</small>
                     <div class="d-flex gap-1">
-                        <span class="badge bg-primary">UK</span>
-                        <span class="badge bg-primary">EN</span>
-                        <span class="badge bg-primary">RU</span>
+                        <?php foreach ($langs as $lang): ?>
+                        <span class="badge bg-primary"><?= $lang['code'] ?></span>
+                        <?php endforeach; ?>
                     </div>
                 </div>
                 <div class="mb-3">

@@ -38,4 +38,8 @@ class Language implements LanguageAwareInterface
     {
         $_SESSION['language'] = $langCode;
     }
+    public static function getDefaultLanguage(): string
+    {
+        return Env::config('DEFAULT_LANG');
+    }
 }
