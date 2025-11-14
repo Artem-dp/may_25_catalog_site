@@ -5,7 +5,7 @@ namespace app\controllers\admin;
 use app\core\Controller;
 use app\core\Language;
 
-class LanguageController extends Controller
+class LanguagesController extends Controller
 {
     // страница со списком языков
     public function index()
