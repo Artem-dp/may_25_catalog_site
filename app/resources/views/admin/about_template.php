@@ -37,13 +37,13 @@ $lang = $data['lang'] ?? ($lang ?? 'ru');
                 <div class="mb-3">
                     <label for="content" class="form-label">Контент</label>
                     <textarea id="content" name="content" rows="12" class="form-control">
-<?= htmlspecialchars($data['content'] ?? '') ?>
+                    <?= htmlspecialchars($data['content'] ?? '') ?>
           </textarea>
                 </div>
 
                 <div class="d-flex gap-2">
                     <button type="submit" class="btn btn-primary">Сохранить</button>
-                    <a href="/admin" class="btn btn-outline-secondary">Отмена</a>
+                    <a href="/admin/dashboard" class="btn btn-outline-secondary">Отмена</a>
                 </div>
             </form>
         </div>

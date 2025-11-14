@@ -1,9 +1,10 @@
 <?php
 namespace app\controllers\admin;
 
+use app\core\Controller;
 use app\models\admin\AboutModel;
 
-class AboutController
+class AboutController extends Controller
 {
     public function index(): void
     {
@@ -12,7 +13,7 @@ class AboutController
         $model = new AboutModel();
         $data  = $model->getByLang($lang);
 
-        include __DIR__ . '/../../resources/views/admin/about_template.php';
+        $this->render('admin/about_template', $data, 'site/layouts/admin_template');
     }
 
     /**
