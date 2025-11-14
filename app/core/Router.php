@@ -163,7 +163,7 @@ class Router
                 return $pathWithoutLang;
             }
         }
-//        Language::setLanguage(Language::getDefaultLanguage());
+        Language::setLanguage(Language::getDefaultLanguage());
         return $uri;
     }
 

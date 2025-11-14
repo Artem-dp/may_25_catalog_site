@@ -16,9 +16,6 @@ class AboutController extends Controller
         $this->render('admin/about_template', $data, 'site/layouts/admin_template');
     }
 
-    /**
-     * Сохранение изменений раздела "О нас".
-     */
     public function save(): void
     {
         $lang    = $_POST['lang'] ?? 'ru';
@@ -31,7 +28,7 @@ class AboutController extends Controller
         }
 
         $model = new AboutModel();
-        $model->upsert($lang, $title, $content);
+        $model->save($lang, $title, $content);
 
         header("Location: /admin/about?lang={$lang}");
         exit;
