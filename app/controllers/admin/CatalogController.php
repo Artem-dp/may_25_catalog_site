@@ -10,9 +10,12 @@ use app\models\admin\CatalogModel;
 
 class CatalogController extends Controller
 {
+    /**
+     * displaying catalog page
+     * @return void
+     */
     public function index(): void
     {
-
         $lang = $_GET['lang'] ?? Language::getDefaultLanguage();
         $allowedLangs = Language::getLanguages();
         $currentLang = array_find($allowedLangs, function ($item) use ($lang) {
@@ -26,6 +29,8 @@ class CatalogController extends Controller
     }
 
     /**
+     * import catalog from csv
+     *
      * @return void
      * @throws CatalogUploadException
      */
@@ -124,6 +129,7 @@ class CatalogController extends Controller
 
     /**
      * download image from url + save to public/uploads/products/
+     *
      * @param string $url
      * @return string
      * @throws CatalogUploadException
@@ -169,6 +175,7 @@ class CatalogController extends Controller
             throw new CatalogUploadException("Failed to download image: $url");
         }
         file_put_contents($filepath, $imgContent);
+
         return '/uploads/products/' . $filename;
     }
 

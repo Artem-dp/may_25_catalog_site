@@ -8,6 +8,9 @@ use app\core\Language;
 class CatalogModel extends Database
 {
 
+    /**
+     * @var \mysqli
+     */
     private \mysqli $db;
 
     public function __construct()
@@ -15,7 +18,12 @@ class CatalogModel extends Database
         $this->db = $this->connect();
     }
 
-    public function saveCatalog($data)
+    /**
+     * @param array $data
+     * @return true
+     * @throws \Exception
+     */
+    public function saveCatalog(array $data): bool
     {
         $this->db->autocommit(false);
         $this->db->begin_transaction();
@@ -69,8 +77,10 @@ class CatalogModel extends Database
         }
     }
 
-
-    private function clearAllCatalogData()
+    /**
+     * @return void
+     */
+    private function clearAllCatalogData():void
     {
 //        TODO: kostil because
 //          Error: Cannot truncate a table referenced in a foreign key constraint (`catalog_db`.`products_langs`, CONSTRAINT `products_langs_ibfk_1`)
@@ -82,14 +92,27 @@ class CatalogModel extends Database
         $this->db->query("SET FOREIGN_KEY_CHECKS = 1");
     }
 
-    private function createCategory()
+    /**
+     * create new category
+     *
+     * @return int category id
+     */
+    private function createCategory():int
     {
         $stmt = $this->db->prepare("INSERT INTO categories (created_at) VALUES (CURRENT_TIMESTAMP)");
         $stmt->execute();
         return $this->db->insert_id;
     }
 
-    private function saveCategoryTranslation($categoryId, $langId, $name)
+    /**
+     * create category translation
+     *
+     * @param int $categoryId
+     * @param int $langId
+     * @param string $name
+     * @return void
+     */
+    private function saveCategoryTranslation(int $categoryId, int $langId,string $name):void
     {
         $stmt = $this->db->prepare(
             "INSERT INTO categories_langs (category_id, lang_id, name) VALUES (?, ?, ?)"
@@ -98,7 +121,14 @@ class CatalogModel extends Database
         $stmt->execute();
     }
 
-    private function createProduct($categoryId, $imageUrl = null)
+    /**
+     * create product
+     *
+     * @param int $categoryId
+     * @param string|null $imageUrl
+     * @return int product id
+     */
+    private function createProduct(int $categoryId,?string $imageUrl = null):int
     {
         $stmt = $this->db->prepare(
             "INSERT INTO products (category_id, image, created_at) VALUES (?, ?, CURRENT_TIMESTAMP)"
@@ -109,7 +139,14 @@ class CatalogModel extends Database
         return $this->db->insert_id;
     }
 
-    private function saveProductTranslation($productId, $langId, $name)
+    /**
+     * create product translation
+     * @param int $productId
+     * @param int $langId
+     * @param string $name
+     * @return void
+     */
+    private function saveProductTranslation(int $productId,int $langId,string $name):void
     {
         $stmt = $this->db->prepare(
             "INSERT INTO products_langs (product_id, lang_id, name) VALUES (?, ?, ?)"
@@ -118,6 +155,11 @@ class CatalogModel extends Database
         $stmt->execute();
     }
 
+    /**
+     * get catalog
+     * @param int $currentLang
+     * @return array
+     */
     public function getCategoriesWithProducts(int $currentLang): array
     {
         $sql = "
@@ -138,7 +180,9 @@ class CatalogModel extends Database
         $stmt->bind_param("ii", $currentLang, $currentLang);
         $stmt->execute();
         $result =  $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+
         $categories = [];
+
         foreach ($result as $row) {
             $categoryId = $row['id'];
 
@@ -161,6 +205,12 @@ class CatalogModel extends Database
 
         return array_values($categories);
     }
+
+    /**
+     * return products count
+     *
+     * @return int
+     */
     public static function getProductsCount(): int
     {
         $db = new Database();
@@ -170,6 +220,12 @@ class CatalogModel extends Database
         $result = $stmt->get_result()->fetch_assoc();
         return $result['count'];
     }
+
+    /**
+     * return categories count
+     *
+     * @return int
+     */
     public static function getCategoriesCount(): int
     {
         $db = new Database();

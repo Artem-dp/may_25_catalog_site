@@ -4,7 +4,6 @@ namespace app\core;
 
 use app\exceptions\ControllerNotFoundException;
 use app\exceptions\RouteNotFoundException;
-use http\Exception\BadMethodCallException;
 
 class Router
 {
@@ -134,6 +133,12 @@ class Router
         $controllerInstance->$action(...$params);
     }
 
+    /**
+     * get language from url
+     *
+     * @param string $uri
+     * @return string
+     */
     private function extractLanguageFromUri(string $uri): string
     {
         $uri = rtrim($uri, '/');
@@ -143,12 +148,12 @@ class Router
 
         // Admin routes ignore language prefix
         if (str_starts_with($uri, '/admin')) {
-//            Language::setLanguage(Language::getDefaultLanguage());
+           Language::setLanguage(Language::getDefaultLanguage());
             return $uri;
         }
 
 
-        // Check if URI starts with /{lang}/
+        // Check if url starts with /{lang}/
         if (preg_match('#^/([a-z]{2})(/.*)?$#', $uri, $matches)) {
             $langCode = $matches[1];
             $pathWithoutLang = $matches[2] ?? '/';
