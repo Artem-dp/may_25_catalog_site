@@ -8,7 +8,11 @@ use app\core\Router;
 
 class LoginController extends Controller
 {
-    public function index()
+    /**
+     * displaying the admin login page
+     * @return void
+     */
+    public function index(): void
     {
         $errors = $_SESSION['errors'] ?? [];
         $oldLoginInput = $_SESSION['oldLoginInput'] ?? '';
@@ -21,7 +25,11 @@ class LoginController extends Controller
         'site/layouts/login_template');
     }
 
-    public function login()
+    /**
+     * admin validation and login
+     * @return void
+     */
+    public function login(): void
     {
         $errors = [];
         $login = $_POST['login'] ?? null;
@@ -50,7 +58,11 @@ class LoginController extends Controller
 
     }
 
-    public function logout()
+    /**
+     * logout admin
+     * @return void
+     */
+    public function logout(): void
     {
         Auth::logout();
         Router::redirect('/admin/login');
