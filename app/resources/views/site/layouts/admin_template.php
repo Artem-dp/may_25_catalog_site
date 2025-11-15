@@ -19,6 +19,16 @@
             <div class="avatar-circle me-2">A</div>
             <span class="navbar-brand mb-0">Панель управления</span>
         </div>
+        <div class="d-flex align-items-center">
+            <a class="navbar-brand mb-0" href="/">
+                <i class="bi bi-browser-chrome"></i>
+                Сайт
+            </a>
+        </div>
+        <div class="devider flex-grow-1">
+
+        </div>
+
         <div>
             <a href="/admin/logout" class="btn btn-outline-light btn-sm">
                 <i class="bi bi-box-arrow-right"></i> Выйти

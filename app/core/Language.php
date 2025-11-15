@@ -3,25 +3,14 @@
 namespace app\core;
 
 use app\interfaces\LanguageAwareInterface;
+use app\models\admin\LanguagesModel;
 
 class Language implements LanguageAwareInterface
 {
     public static function getLanguages(): array
     {
-//        $model = new LanguagesModel();
-//        $languages = $model->getAll();
-//
-//        // преобразуем результат в ассоциативный массив вида ['en' => 'English', ...]
-//        $result = [];
-//        foreach ($languages as $lang) {
-//            $result[$lang['code']] = $lang['name'];
-//        }
-
-        return [
-            ['id' => 1, 'code' => 'en', 'name' => 'English'],
-            ['id' => 1, 'code' => 'ru', 'name' => 'Русский'],
-            ['id' => 1, 'code' => 'uk', 'name' => 'Українська']
-        ];
+        $model = new LanguagesModel();
+        return $model->getAll();
     }
 
     //получаем текущий язык из сессии
@@ -41,5 +30,10 @@ class Language implements LanguageAwareInterface
     public static function getDefaultLanguage(): string
     {
         return Env::config('DEFAULT_LANG');
+    }
+    public static function isAvailable(string $langCode): bool
+    {
+        $languages = self::getLanguages();
+        return in_array($langCode, array_column($languages, 'code'));
     }
 }

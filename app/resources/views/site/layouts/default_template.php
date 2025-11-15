@@ -13,14 +13,14 @@
 <header>
     <div class="container header-row">
         <a class="logo" href="/">
-            <img src="" alt="Логотип сайта">
+            <img src="/images/nocomfy_site.png" alt="Логотип сайта">
         </a>
         <form class="lang" method="get" action="/">
             <label for="lang"></label>
             <select id="lang" name="lang">
-<!--                --><?php //foreach (\app\core\Language::getLanguages() as $language): ?>
-<!--                    <option value="--><?php //= $language['code'] ?><!--" --><?php //= $language['code'] === \app\core\Language::getCurrentLanguage() ? 'selected' : '' ?><!-->--><?php //= $language['name'] ?><!--</option>-->
-<!--                --><?php //endforeach; ?>
+                <?php foreach (\app\core\Language::getLanguages() as $language): ?>
+                    <option value="<?= $language['code'] ?>" <?= $language['code'] === \app\core\Language::getCurrentLanguage() ? 'selected' : '' ?>><?= $language['name'] ?></option>
+                <?php endforeach; ?>
             </select>
         </form>
         <div class="right-block">

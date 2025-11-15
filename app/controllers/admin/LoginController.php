@@ -67,4 +67,13 @@ class LoginController extends Controller
         Auth::logout();
         Router::redirect('/admin/login');
     }
+
+    public function redirectToDashboard()
+    {
+        if (Auth::check()) {
+            Router::redirect('/admin/dashboard');
+        } else {
+            Router::redirect('/admin/login');
+        }
+    }
 }
